@@ -1,26 +1,49 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSchuelerDto } from './dto/create-schueler.dto';
-import { UpdateSchuelerDto } from './dto/update-schueler.dto';
 
 @Injectable()
 export class SchuelerService {
-  create(createSchuelerDto: CreateSchuelerDto) {
-    return 'This action adds a new schueler';
-  }
 
-  findAll() {
-    return `This action returns all schueler`;
-  }
+    private students = [
+        {
+            name: 'Marcel',
+            id: 123456,
+            email: 'marcel@biegel.com',
+            writtenGrades: [
+                1, 2, 3, 4
+            ],
+            oralGrades: [
+                3, 4, 5, 6
+            ],
+        },
+        {
+            name: 'Marcel2',
+            id: 123457,
+            email: 'marcel@biegel.com',
+            writtenGrades: [
+                1, 2, 3, 4
+            ],
+            oralGrades: [
+                3, 4, 5, 6
+            ],
+        },
+        {
+            name: 'Marcel3',
+            id: 123458,
+            email: 'marcel@biegel.com',
+            writtenGrades: [
+                1, 2, 3, 4
+            ],
+            oralGrades: [
+                3, 4, 5, 6
+            ],
+        }
+    ]
 
-  findOne(id: number) {
-    return `This action returns a #${id} schueler`;
-  }
+    getAllSchueler(sort?: 'asc' | 'desc') {
+        if (sort) {
+            this.students.sort((a, b) => (sort === 'asc') ? a.id - b.id : b.id - a.id);
+        }
 
-  update(id: number, updateSchuelerDto: UpdateSchuelerDto) {
-    return `This action updates a #${id} schueler`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} schueler`;
-  }
+        return this.students;
+    }
 }

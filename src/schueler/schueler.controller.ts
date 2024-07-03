@@ -1,34 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { CreateSchuelerDto } from './dto/create-schueler-dto';
+import { UpdateSchuelerDto } from './dto/update-schueler-dto';
 import { SchuelerService } from './schueler.service';
-import { CreateSchuelerDto } from './dto/create-schueler.dto';
-import { UpdateSchuelerDto } from './dto/update-schueler.dto';
 
 @Controller('schueler')
 export class SchuelerController {
-  constructor(private readonly schuelerService: SchuelerService) {}
+    constructor(private readonly schuelerService: SchuelerService) {};
 
-  @Post()
-  create(@Body() createSchuelerDto: CreateSchuelerDto) {
-    return this.schuelerService.create(createSchuelerDto);
-  }
+    @Get()
+    getAllSchueler(@Query('sort') sort: 'asc' | 'desc') {
+        return this.schuelerService.getAllSchueler(sort);;
+    }
 
-  @Get()
-  findAll() {
-    return this.schuelerService.findAll();
-  }
+    @Get(':id')
+    getOneSchueler(@Param('id') id: string) {
+        return { id };
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.schuelerService.findOne(+id);
-  }
+    @Post()
+    createSchueler(@Body() createSchuelerDto: CreateSchuelerDto) {
+        return {};
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSchuelerDto: UpdateSchuelerDto) {
-    return this.schuelerService.update(+id, updateSchuelerDto);
-  }
+    @Put(':id')
+    updateSchueler(@Param('id') id: string, @Body() updateSchuelerDto: UpdateSchuelerDto) {
+        return { id };
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.schuelerService.remove(+id);
-  }
+    @Delete(':id')
+    deleteSchueler(@Param('id') id: string) {
+        return { id };
+    }
 }
