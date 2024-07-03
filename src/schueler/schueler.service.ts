@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateSchuelerDto } from './dto/create-schueler-dto';
 
 @Injectable()
 export class SchuelerService {
@@ -45,5 +46,19 @@ export class SchuelerService {
         }
 
         return this.students;
+    }
+
+    getSchueler(id: number) {
+        const student = this.students.find((student) => student.id === id);
+
+        if (! student) throw new Error('Schueler not found');
+
+        return student;
+    }
+
+    createSchueler(schueler: CreateSchuelerDto) {
+        this.students.push(schueler)
+
+        return schueler;
     }
 }

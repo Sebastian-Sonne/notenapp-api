@@ -14,7 +14,7 @@ export class SchuelerController {
 
     @Get(':id')
     getOneSchueler(@Param('id') id: string) {
-        return { id };
+        return this.schuelerService.getSchueler(+id);
     }
 
     @Post()
