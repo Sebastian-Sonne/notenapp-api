@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSchuelerDto } from './dto/create-schueler-dto';
+import { UpdateSchuelerDto } from './dto/update-schueler-dto';
 
 @Injectable()
 export class SchuelerService {
@@ -51,14 +52,34 @@ export class SchuelerService {
     getSchueler(id: number) {
         const student = this.students.find((student) => student.id === id);
 
-        if (! student) throw new Error('Schueler not found');
+        if (! student) throw new Error("Student not Found || DB Error");
 
         return student;
     }
 
     createSchueler(schueler: CreateSchuelerDto) {
-        this.students.push(schueler)
+        this.students.push({
+            ...schueler,
+            id: Date.now(),
+        });
 
         return schueler;
+    }
+
+    updateSchueler(id: number, updateSchuelerDto: UpdateSchuelerDto) {
+        this.students = this.students.map((student) => {
+            if(student.id === id) {
+                return {...student, ...updateSchuelerDto};
+            }
+        });
+
+        return this.getSchueler(id);
+    }
+
+    deleteSchueler(id: number) {
+        const toBeRemovedStudent = this.getSchueler(id);
+        this.students = this.students.filter((student) => student.id !== id);
+
+        return toBeRemovedStudent;
     }
 }

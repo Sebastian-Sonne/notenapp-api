@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { CreateSchuelerDto } from './dto/create-schueler-dto';
 import { UpdateSchuelerDto } from './dto/update-schueler-dto';
 import { SchuelerService } from './schueler.service';
 
 @Controller('schueler')
 export class SchuelerController {
-    constructor(private readonly schuelerService: SchuelerService) {};
+    constructor(private readonly schuelerService: SchuelerService) { };
 
     @Get()
     getAllSchueler(@Query('sort') sort: 'asc' | 'desc') {
@@ -13,22 +13,26 @@ export class SchuelerController {
     }
 
     @Get(':id')
-    getOneSchueler(@Param('id') id: string) {
-        return this.schuelerService.getSchueler(+id);
+    getOneSchueler(@Param('id', ParseIntPipe) id: number) {
+        try {
+            return this.schuelerService.getSchueler(id);
+        } catch (e) {
+            throw new NotFoundException();
+        }
     }
 
     @Post()
     createSchueler(@Body() createSchuelerDto: CreateSchuelerDto) {
-        return {};
+        return this.schuelerService.createSchueler(createSchuelerDto);
     }
 
     @Put(':id')
-    updateSchueler(@Param('id') id: string, @Body() updateSchuelerDto: UpdateSchuelerDto) {
-        return { id };
+    updateSchueler(@Param('id', ParseIntPipe) id: number, @Body() updateSchuelerDto: UpdateSchuelerDto) {
+        return this.schuelerService.updateSchueler(id, updateSchuelerDto);
     }
 
     @Delete(':id')
-    deleteSchueler(@Param('id') id: string) {
-        return { id };
+    deleteSchueler(@Param('id', ParseIntPipe) id: number) {
+        return this.schuelerService.deleteSchueler(id);
     }
 }
