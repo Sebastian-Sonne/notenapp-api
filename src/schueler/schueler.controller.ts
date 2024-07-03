@@ -28,11 +28,19 @@ export class SchuelerController {
 
     @Put(':id')
     updateSchueler(@Param('id', ParseIntPipe) id: number, @Body() updateSchuelerDto: UpdateSchuelerDto) {
-        return this.schuelerService.updateSchueler(id, updateSchuelerDto);
+        try {
+            return this.schuelerService.updateSchueler(id, updateSchuelerDto);
+        } catch (e) {
+            throw new NotFoundException();
+        }
     }
 
     @Delete(':id')
     deleteSchueler(@Param('id', ParseIntPipe) id: number) {
-        return this.schuelerService.deleteSchueler(id);
+        try {
+            return this.schuelerService.deleteSchueler(id);
+        } catch (e) {
+            throw new NotFoundException();
+        }
     }
 }
